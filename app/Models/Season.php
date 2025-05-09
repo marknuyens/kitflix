@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Quality;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Plan extends Model
+class Season extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -13,12 +13,10 @@ class Plan extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'content_id',
         'description',
-        'price',
-        'max_users',
-        'max_quality',
-        'contains_ads',
+        'trailer_url',
+        'released_at',
     ];
 
     /**
@@ -29,7 +27,15 @@ class Plan extends Model
     protected function casts(): array
     {
         return [
-            'max_quality' => Quality::class,
+            'released_at' => 'date',
         ];
+    }
+
+     /**
+     * Get the episodes of the current season.
+     */
+    public function episodes(): hasMany
+    {
+        return $this->hasMany(Content::class);
     }
 }

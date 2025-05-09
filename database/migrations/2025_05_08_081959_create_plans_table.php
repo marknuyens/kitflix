@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->decimal('price');
-            $table->string('quality');
             $table->integer('max_users');
-            $table->boolean('show_ads');
+            $table->string('max_quality');
+            $table->integer('contains_ads');
             $table->timestamps();
         });
     }

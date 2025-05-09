@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Content;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,8 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shows', function (Blueprint $table) {
+        Schema::create('seasons', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Content::class)->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->text('description')->nullable();
+            $table->string('trailer_url', 512)->nullable();
+            $table->date('released_at')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shows');
+        Schema::dropIfExists('seasons');
     }
 };

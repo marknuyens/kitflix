@@ -1,5 +1,8 @@
 <?php
 
+use App\Genre;
+use App\Models\Content;
+use App\Models\Season;
 use App\Models\Show;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,24 +17,25 @@ return new class extends Migration
     {
         Schema::create('content', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Show::class)->nullable()
+            $table->foreignIdFor(Season::class)->nullable()
                 ->constrained()
-                ->cascadeOnDelete();
-            $table->integer('show_season');
-            $table->integer('show_episode');
-            $table->unique(['show_id', 'show_season', 'show_episode']);
+                ->nullOnDelete();
+            $table->integer('episode')->nullable();
+            $table->unique(['season_id', 'episode']);
             $table->string('title')->index();
             $table->text('description')->nullable();
-            $table->string('image')->nullable();
-            $table->string('genre');
+            $table->string('trailer_url', 512)->nullable();
+            $table->string('movie_url', 512)->nullable();
+            $table->json('images', 512)->nullable();
+            $table->enum('genre', array_column(Genre::cases(), 'value'));
             $table->string('subgenre')->nullable();
             $table->integer('length');
             $table->string('language');
-            $table->date('release_date')->nullable();
+            $table->date('released_at')->nullable();
             $table->json('cast')->nullable()->index();
-            $table->integer('age_restriction')->nullable();
-            $table->json('content_warning')->nullable();
-            $table->json('meta_data');
+            $table->json('content_labels')->nullable();
+            $table->boolean('safe_for_children')->default(false);
+            $table->json('meta_data')->nullable();
             $table->timestamps();
         });
     }

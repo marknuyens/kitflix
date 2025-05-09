@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Content;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +16,9 @@ return new class extends Migration
         Schema::create('watch_sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->foreignIdFor(Content::class)
                 ->constrained()
                 ->cascadeOnDelete();
             $table->integer('played_length');

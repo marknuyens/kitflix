@@ -27,22 +27,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the plan associated with the user.
-     */
-     public function plan(): HasOne
-     {
-         return $this->hasOne(Plan::class);
-     }
-    
-     /**
-     * Get the watch sessions associated with the user.
-     */
-     public function watch_sessions(): hasMany
-     {
-         return $this->hasMany(WatchSession::class);
-     }
-
-    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
@@ -66,5 +50,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the plan associated with the user.
+     */
+    public function plan(): HasOne
+    {
+        return $this->hasOne(Plan::class);
+    }
+   
+    /**
+    * Get the watch sessions associated with the user.
+    */
+    public function watch_sessions(): hasMany
+    {
+        return $this->hasMany(WatchSession::class);
     }
 }

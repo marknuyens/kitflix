@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)
+            // users can be part of other users, essentially forming a household
+            $table->foreignIdFor(User::class)->nullable()
                 ->constrained()
                 ->nullOnDelete();
-            $table->foreignIdFor(Plan::class)
+            $table->foreignIdFor(Plan::class)->nullable()
                 ->constrained()
                 ->nullOnDelete();
             $table->string('name');
