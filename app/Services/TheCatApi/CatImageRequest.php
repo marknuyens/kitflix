@@ -130,8 +130,10 @@ class CatImageRequest
 
     /**
      * Make a request to The Cat API.
+     * 
+     * @return Collection
      */
-    public function get(array $params = [])
+    public function get(array $params = []): Collection
     {
         $params = $params ?: $this->params->toArray();
         $params = count($params) > 0 ? '?'.http_build_query($params) : null;
@@ -147,6 +149,8 @@ class CatImageRequest
      *
      * @param  ?string  $key  The key to look for.
      * @param  ?string  $default  Any fallback value.
+     * 
+     * @return mixed
      */
     public function config(?string $key = null, ?string $default = null)
     {
@@ -156,14 +160,16 @@ class CatImageRequest
     /**
      * Get the fallback image in case something went wrong.
      *
-     * @param  array<string, string>  $params
+     * @param  Collection
      */
-    public function fallback(): array
+    public function fallback(): Collection
     {
-        return [
+        return collect([
+            [
             'url'    => url('/images/fallback_image.jpg'),
             'width'  => 772,
             'height' => 514,
-        ];
+            ]
+        ]);
     }
 }

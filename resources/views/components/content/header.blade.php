@@ -1,6 +1,6 @@
 @props(['title' => null, 'description' => null])
 
-<header x-data="{ showTools: false }"
+<header
     class="max-w-7xl mx-auto px-6 2xl:px-0 mt-6 flex flex-col lg:flex-row gap-8 justify-between items-start lg:items-center pb-6 mb-6 border-b border-white/20">
     @if ($title)
         <h1 class="text-white font-bold text-3xl">
@@ -10,17 +10,13 @@
             @endif
         </h1>
     @endif
-    <div class="flex items-center gap-6 h-10">
-        <button class="size-5 text-white/50 hover:text-white" @click="showTools = !showTools">
-            <x-icons.tools x-show="!showTools" />
-            <x-icons.close x-show="showTools" />
-        </button>
-        <!-- Tools -->
-        <form method="get" class="flex justify-end gap-12" x-show="showTools">
+    <div class="flex items-center gap-6 h-10" x-data="{ showTools: false }">
+        <!-- Tools Form -->
+        <form method="get" class="flex justify-end gap-12 transition-opacity duration-300 opacity-0" x-bind:class="showTools ? 'opacity-100' : 'opacity-0'">
             <fieldset class="flex gap-4">
                 <x-input name="search" value="{{ request()->input('search') }}"
                     placeholder="{{ __('Search by title, actor or genre') }}" />
-                <x-button type="submit" :text="__('Search')" />
+                <x-primary-button type="submit" :text="__('Search')" />
             </fieldset>
             <fieldset class="flex gap-4">
                 <x-select name="sort" value="{{ request()->input('sort') }}"
@@ -32,8 +28,13 @@
                         'score_desc' => __('Score: awful to excellent'),
                         'score_asc' => __('Score: excellent to awful'),
                     ]" />
-                <x-button type="submit" :text="__('Sort')" />
+                <x-primary-button type="submit" :text="__('Sort')" />
             </fieldset>
         </form>
+        <!-- Tools Toggle Button -->
+        <button class="size-5 text-white/50 hover:text-white" @click="showTools = !showTools">
+            <x-icons.tools x-show="!showTools" />
+            <x-icons.close x-show="showTools" />
+        </button>
     </div>
 </header>

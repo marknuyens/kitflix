@@ -4,12 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Content;
+use App\Models\WatchSession;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\hasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\hasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -46,11 +48,11 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'is_child' => 'boolean',
-            'is_owner' => 'boolean',
-            'is_admin' => 'boolean',
+            'is_child'          => 'boolean',
+            'is_owner'          => 'boolean',
+            'is_admin'          => 'boolean',
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
@@ -61,18 +63,18 @@ class User extends Authenticatable
     {
         return $this->hasOne(Plan::class);
     }
-   
+
     /**
-    * Get the watch sessions associated with the user.
-    */
-    public function watch_sessions(): hasMany
+     * Get the content from "my list" of the user.
+     */
+    public function myList()
     {
-        return $this->hasMany(WatchSession::class);
+        return $this->belongsToMany(Content::class, WatchSession::class, 'user_id', 'content_id');
     }
-    
+
     /**
-    * Get user's first name.
-    */
+     * Get user's first name.
+     */
     public function firstName(): Attribute
     {
         return Attribute::get(fn(): string => explode(' ', $this->name)[0]);

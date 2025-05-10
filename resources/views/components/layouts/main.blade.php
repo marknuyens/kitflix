@@ -1,3 +1,5 @@
+@props(['title' => null])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -5,7 +7,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }} @if(isset($title)) - {{ $title }} @endif</title>
+    <title>{{ config('app.name') }} @if (isset($title))
+            - {{ $title }}
+        @endif
+    </title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,6 +23,8 @@
 
     <!-- AlpineJS -->
     <script src="//unpkg.com/alpinejs" defer></script>
+    
+</head>
 
 <body class="bg-neutral-900">
     <!-- Global Header -->
@@ -28,14 +35,8 @@
         {{ $slot }}
     </main>
 
-    <!-- Footer -->
-    <footer class="flex justify-between">
-        <ul>
-            <li><a href="{{ route('privacy') }}">{{ __('Privacy') }}</a></li>
-            <li><a href="{{ route('terms') }}">{{ __('Terms & Conditions') }}</a></li>
-            <li><a href="{{ route('support') }}">{{ __('Support') }}</a></li>
-        </ul>
-    </footer>
+    <!-- Global Footer -->
+    <x-global-footer />
 
 </body>
 

@@ -17,7 +17,7 @@ class WatchSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'       => 1,
+            'user_id'       => rand(1,3),
             'content_id'    => rand(1, 50),
             'played_length' => rand(1, 120),
             'is_complete'   => false,

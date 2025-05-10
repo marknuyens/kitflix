@@ -1,6 +1,4 @@
-<x-layout class="max-w-2xl rounded-xl bg-white/10 my-12 px-8 py-7 mx-auto text-white ">
-    <h1 class="text-3xl">{{ __('Log in') }}</h1>
-    <hr class="border-white/20 my-6">
+<x-layouts.auth :title="__('Login')" width="max-w-lg">
     <form action="{{ route('login') }}" method="post">
         @csrf
         <div class="flex flex-wrap gap-6">
@@ -14,6 +12,6 @@
             </fieldset>
         </div>
         <hr class="my-6 border-white/20">
-        <x-button type="submit" class="block w-full" :text="__('Log into my account')" />
+        <x-primary-button type="submit" class="block w-full" :text="__('Log into my account')" />
     </form>
 </x-layout>

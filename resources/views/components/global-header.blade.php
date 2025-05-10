@@ -18,13 +18,13 @@
                     🧑 {{ __('Welcome') }}, &nbsp;{{ auth()->user()->first_name }}!
                     <form method="post" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="text-red-500 font-bold cursor-pointer">{{ __('Log out') }}</button>
+                        <button type="submit" class="text-red-500 font-bold">{{ __('Log out') }}</button>
                     </form>
                 </span>
             @else
                 <div class=" flex gap-4">
-                    <x-button href="{{ route('login') }}" :text="__('Login')" />
-                    <x-button href="{{ route('register') }}" :text="__('Sign up')" />
+                    <x-secondary-button href="{{ route('login') }}" :text="__('Login')" />
+                    <x-primary-button href="{{ route('register') }}" :text="__('Sign up')" />
                 @endauth
             </div>
         </div>

@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use App\Genre;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\TheCatApi\CatImageRequest;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 class Content extends Model
 {
     /** @use HasFactory<\Database\Factories\ContentFactory> */
     use HasFactory;
 
-     /**
+    /**
      * The table associated with the model.
      *
      * @var string|null
@@ -80,10 +82,13 @@ class Content extends Model
     }
 
     /**
-     * Determine if the current content is a series.
+     * Get the image of the content.
      */
-    public function isSeries(): Attribute
+    public function image(): Attribute
     {
-        return Attribute::get(fn(): bool => ! empty($this->season_id));
+        return Attribute::get(fn() => Cache::remember(
+            'content_image_' . $this->id, now()->addDay(),
+            fn() => (new CatImageRequest)->get()->first() ?? null
+        ));
     }
 }

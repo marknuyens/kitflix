@@ -1,0 +1,1 @@
+<x-button {{ $attributes }} class="bg-gray-500 text-white font-medium">{{ $text ?? $slot }}</x-button>

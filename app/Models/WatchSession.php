@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class WatchSession extends Model
@@ -24,4 +25,12 @@ class WatchSession extends Model
         'is_offline',
         'review_score'
     ];
+
+    /**
+     * Get the season of the current content (episode).
+     */
+    public function content(): BelongsTo
+    {
+        return $this->belongsTo(Content::class);
+    }
 }

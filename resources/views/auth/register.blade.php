@@ -1,6 +1,4 @@
-<x-layout class="max-w-2xl rounded-xl bg-white/10 my-12 px-8 py-7 mx-auto text-white ">
-    <h1 class="text-3xl">{{ __('Sign up') }}</h1>
-    <hr class="border-white/20 my-6">
+<x-layouts.auth :title="__('Sign up')" width="max-w-4xl">
     <form action="{{ route('register') }}">
         @csrf
         <div class="grid grid-cols-2 gap-x-12 gap-y-6">
@@ -30,6 +28,6 @@
             </fieldset>
         </div>
         <hr class="my-6 border-white/20">
-        <x-button type="submit" class="block w-full" :text="__('Start my Kitflix experience!')" />
+        <x-primary-button type="submit" class="block w-full" :text="__('Start my Kitflix experience!')" />
     </form>
-</x-layout>
+</x-layouts.auth>

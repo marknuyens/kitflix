@@ -18,13 +18,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        
         User::factory()->owner()->create();
         User::factory()->admin()->create();
         User::factory()->child()->create();
+        
+        User::factory(10)->create();
 
-        Content::factory(100)->create();
+        Content::factory(300)->create();
 
         WatchSession::factory(20)->create();
 
