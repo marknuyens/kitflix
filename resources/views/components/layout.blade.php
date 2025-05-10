@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }} @if(isset($pageTitle)) - {{ $pageTitle }} @endif</title>
+    <title>{{ config('app.name') }} @if(isset($title)) - {{ $title }} @endif</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -16,9 +16,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 
+    <!-- AlpineJS -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+
 <body class="bg-neutral-900">
     <!-- Global Header -->
-    <x-header />
+    <x-global-header />
 
     <!-- Main Content -->
     <main {{ $attributes }}>

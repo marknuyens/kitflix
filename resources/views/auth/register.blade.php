@@ -1,4 +1,4 @@
-<x-layout class="max-w-7xl rounded-xl bg-white/10 my-12 px-10 py-9 mx-auto text-white ">
+<x-layout class="max-w-2xl rounded-xl bg-white/10 my-12 px-8 py-7 mx-auto text-white ">
     <h1 class="text-3xl">{{ __('Sign up') }}</h1>
     <hr class="border-white/20 my-6">
     <form action="{{ route('register') }}">

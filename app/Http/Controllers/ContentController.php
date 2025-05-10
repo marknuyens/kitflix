@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\TheCatApi\ImageRequest;
+use App\Services\TheCatApi\CatImageRequest;
 
 class ContentController extends Controller
 {
@@ -11,27 +13,11 @@ class ContentController extends Controller
      */
     public function index(Request $request)
     {
-        $data = match($request->route()->getName()) {
-            'home' => [
-                'pageTitle' => __('Home'),
-                'pageDescription' => __('Recommendations for you.')
-            ],
-            'genres' => [
-                'pageTitle' => __('Genres'),
-                'pageDescription' => __('Browse content by genre')
-            ],
-            'my-list' => [
-                'pageTitle' => __('My List'),
-                'pageDescription' => __('Watch your favorite content')
-            ],
-            // fallback details in case of missing definition
-            null => [
-                'pageTitle' => ucfirst($request->route()->getName()),
-                'pageDescription' => ''
-            ]
-        };
+        $page = config('kitflix.pages.'.$request->route()->getName());
 
-        return view('content.index', $data);
+        $page['hero'] = (new CatImageRequest())->get()->first();
+
+        return view('content.index', $page);
     }
 
     /**
