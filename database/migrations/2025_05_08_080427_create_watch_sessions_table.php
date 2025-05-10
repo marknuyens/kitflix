@@ -25,6 +25,7 @@ return new class extends Migration
             $table->boolean('is_complete');
             $table->boolean('is_favorite');
             $table->boolean('is_offline');
+            $table->integer('review_score');
             $table->timestamps();
         });
     }

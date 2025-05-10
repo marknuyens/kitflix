@@ -1,0 +1,1 @@
+<label {{ $attributes->merge(['class' => 'inline-block mb-3']) }}>{{ $text ?? $slot }}</label>

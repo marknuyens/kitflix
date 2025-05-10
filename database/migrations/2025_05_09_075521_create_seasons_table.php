@@ -14,9 +14,6 @@ return new class extends Migration
     {
         Schema::create('seasons', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Content::class)->nullable()
-                ->constrained()
-                ->nullOnDelete();
             $table->text('description')->nullable();
             $table->string('trailer_url', 512)->nullable();
             $table->date('released_at')->nullable();

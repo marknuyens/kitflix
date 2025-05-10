@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\hasMany;
@@ -66,5 +68,13 @@ class User extends Authenticatable
     public function watch_sessions(): hasMany
     {
         return $this->hasMany(WatchSession::class);
+    }
+    
+    /**
+    * Get user's first name.
+    */
+    public function firstName(): Attribute
+    {
+        return Attribute::get(fn(): string => explode(' ', $this->name)[0]);
     }
 }

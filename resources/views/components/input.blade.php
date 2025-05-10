@@ -1,0 +1,1 @@
+<input {{ $attributes->merge(['class' => 'block w-full px-3 py-2 rounded-md bg-white text-black shadow-sm', 'type' => 'text', 'maxlength' => 255]) }} />

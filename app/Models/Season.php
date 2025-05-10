@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Season extends Model
 {
+    /** @use HasFactory<\Database\Factories\SeasonFactory> */
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'content_id',
         'description',
         'trailer_url',
         'released_at',
@@ -29,13 +31,5 @@ class Season extends Model
         return [
             'released_at' => 'date',
         ];
-    }
-
-     /**
-     * Get the episodes of the current season.
-     */
-    public function episodes(): hasMany
-    {
-        return $this->hasMany(Content::class);
     }
 }
