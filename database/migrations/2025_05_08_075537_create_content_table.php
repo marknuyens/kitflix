@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('title')->index();
             $table->text('description')->nullable();
             $table->string('trailer_url', 512)->nullable();
-            $table->string('movie_url', 512)->nullable();
-            $table->json('images', 512)->nullable();
+            $table->string('video_url', 512)->nullable();
+            $table->string('image_url', 512)->nullable();
             $table->enum('genre', array_column(Genre::cases(), 'value'));
             $table->string('subgenre')->nullable();
             $table->integer('length');

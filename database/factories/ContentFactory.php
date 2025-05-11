@@ -18,13 +18,14 @@ class ContentFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'season_id' => array_rand([null, rand(0,30)]),
-            // 'episode'   => rand(0,10),
+            // season data are handled in the DatabaseSeeder.
             'title'       => ucfirst(implode(' ', fake()->words())),
             'description' => fake()->paragraph(),
             'genre'       => Genre::random(),
-            'subgenre'    => null,
-            'length'      => rand(60, 120),
+            'subgenre'    => fake()->words(asText: true),
+            'trailer_url'   => 'https://www.youtube.com/watch?v=MlDtL2hIj-Q',
+            'video_url'   => 'https://www.youtube.com/watch?v=MlDtL2hIj-Q',
+            'length'      => rand(60, 150),
             'language'    => fake()->languageCode(),
             'released_at' => fake()->date(),
             'cast'        => [

@@ -1,7 +1,7 @@
 @props(['title' => null, 'description' => null])
 
 <header
-    class="max-w-7xl mx-auto px-6 2xl:px-0 mt-6 flex flex-col lg:flex-row gap-8 justify-between items-start lg:items-center pb-6 mb-6 border-b border-white/20">
+    class="max-w-7xl mx-auto px-6 2xl:px-0 mt-6 flex flex-col lg:flex-row gap-8 justify-between items-start lg:items-center pb-4 mb-4">
     @if ($title)
         <h1 class="text-white font-bold text-3xl">
             {{ $title }}
@@ -12,7 +12,7 @@
     @endif
     <div class="flex items-center gap-6 h-10" x-data="{ showTools: false }">
         <!-- Tools Form -->
-        <form method="get" class="flex justify-end gap-12 transition-opacity duration-300 opacity-0" x-bind:class="showTools ? 'opacity-100' : 'opacity-0'">
+        <form method="get" class="flex justify-end gap-12 transition-opacity duration-300 opacity-100 lg:opacity-0" x-bind:class="showTools ? 'lg:opacity-100' : 'lg:opacity-0'">
             <fieldset class="flex gap-4">
                 <x-input name="search" value="{{ request()->input('search') }}"
                     placeholder="{{ __('Search by title, actor or genre') }}" />
@@ -32,7 +32,7 @@
             </fieldset>
         </form>
         <!-- Tools Toggle Button -->
-        <button class="size-5 text-white/50 hover:text-white" @click="showTools = !showTools">
+        <button class="size-5 text-white/50 hover:text-white hidden lg:block" @click="showTools = !showTools">
             <x-icons.tools x-show="!showTools" />
             <x-icons.close x-show="showTools" />
         </button>

@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Genre;
-use App\Services\TheCatApi\CatImageRequest;
+use App\Models\WatchSession;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Cache;
 
 class Content extends Model
 {
@@ -34,8 +35,8 @@ class Content extends Model
         'title',
         'description',
         'trailer_url',
-        'movie_url',
-        'images',
+        'video_url',
+        'image_url',
         'genre',
         'subgenre',
         'length',
@@ -60,35 +61,39 @@ class Content extends Model
             'safe_for_children' => 'boolean',
             'content_labels'    => 'json',
             'meta_data'         => 'json',
-            'images'            => 'json',
             'genre'             => Genre::class,
         ];
     }
 
     /**
-     * Get all of the seasons of the current content (show).
+     * Get all of the content's current watch sessions.
      */
-    public function seasons(): hasMany
+    public function watch_sessions(): hasMany
     {
-        return $this->hasMany(Season::class);
+        return $this->hasMany(WatchSession::class);
     }
 
     /**
-     * Get the season of the current content (episode).
+     * Scope a query to only include popular content.
+     * 
+     * @param  ?int  $limit  The amount of content.
      */
-    public function season(): BelongsTo
+    protected function popular(?int $limit = 10): Builder
     {
-        return $this->belongsTo(Season::class);
+        return self::query()
+            ->join('watch_sessions', 'content.id', '=', 'content_id')
+            ->selectRaw('content.*, COUNT(*) as count')
+            ->groupBy('content_id')
+            ->orderBy('count', 'desc')
+            ->limit($limit);
     }
 
     /**
-     * Get the image of the content.
+     * Normalize the video URL to one that's supported by embedding.
      */
-    public function image(): Attribute
+    public function embedUrl(): Attribute
     {
-        return Attribute::get(fn() => Cache::remember(
-            'content_image_' . $this->id, now()->addDay(),
-            fn() => (new CatImageRequest)->get()->first() ?? null
-        ));
+        return Attribute::get(fn(): string => str_replace('/watch?v=', '/embed/', $this->video_url));
     }
+
 }

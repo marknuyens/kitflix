@@ -18,7 +18,7 @@ class CatImageRequest
      * @param  string  $path
      */
     protected string $path = 'search';
-    
+
     /**
      * @param  Collection  $params
      */
@@ -33,7 +33,7 @@ class CatImageRequest
     {
         $this->params = collect();
 
-        $this->request = Http::baseUrl($this->config('base_url').'/images')
+        $this->request = Http::baseUrl($this->config('base_url') . '/images')
             ->withHeaders(['x-api-key' => $this->config('api_key')])
             ->timeout(seconds: 5)
             ->retry(times: 3, sleepMilliseconds: 500)
@@ -44,6 +44,8 @@ class CatImageRequest
      * Limit the request's results by a specific number.
      *
      * @param  int  $limit  The maximum amount of results to load.
+     *
+     * @return self
      */
     public function limit(int $limit = 1): self
     {
@@ -56,6 +58,8 @@ class CatImageRequest
      * Limit the request's results by a specific number.
      *
      * @param  ?int  $amount  The maximum amount of results to load.
+     *
+     * @return self
      */
     public function page(?int $page = 0): self
     {
@@ -68,6 +72,8 @@ class CatImageRequest
      * The order to return the images in by their upload date.
      *
      * @param  Order  $order  The specific order to use.
+     *
+     * @return self
      */
     public function order(Order $order): self
     {
@@ -80,6 +86,8 @@ class CatImageRequest
      * Only return images that have breed information.
      *
      * @param  bool  $has_breads  To include breads or not.
+     *
+     * @return self
      */
     public function has_breeds(?bool $has_breeds = false): self
     {
@@ -92,8 +100,10 @@ class CatImageRequest
      * The IDs of the breeds to filter the images. e.g. ?breed_ids=beng,abys.
      *
      * @param  string|array|null  $breed_ids  The ids of the breeds (e.g. "beng" or "abys")
+     *
+     * @return self
      */
-    public function breed_ids(string | array | null $breed_ids)
+    public function breed_ids(string | array | null $breed_ids): self
     {
         $breed_ids = Arr::wrap($breed_ids);
         $breed_ids = count($breed_ids) > 0 ? implode(',', $breed_ids) : null;
@@ -107,8 +117,10 @@ class CatImageRequest
      * The IDs of the categories to filter the images. e.g. ?breed_ids=1,5,14  (docs might not be accurate).
      *
      * @param  string|array|null  $category_ids  The ids of the breeds (e.g. "beng" or "abys")
+     *
+     * @return self
      */
-    public function category_ids(string | array | null $category_ids)
+    public function category_ids(string | array | null $category_ids): self
     {
         $category_ids = Arr::wrap($category_ids);
         $category_ids = count($category_ids) > 0 ? implode(',', $category_ids) : null;
@@ -120,6 +132,8 @@ class CatImageRequest
 
     /**
      * Get all cat breeds.
+     *
+     * @return self
      */
     public function breeds(): self
     {
@@ -130,16 +144,18 @@ class CatImageRequest
 
     /**
      * Make a request to The Cat API.
-     * 
+     *
+     * @param  ?array  $params  Any additional parameter values to override.
+     *
      * @return Collection
      */
-    public function get(array $params = []): Collection
+    public function get(?array $params = []): Collection
     {
-        $params = $params ?: $this->params->toArray();
-        $params = count($params) > 0 ? '?'.http_build_query($params) : null;
-        
+        $params = array_merge_recursive($this->params->toArray(), $params);
+        $params = count($params) > 0 ? '?' . http_build_query($params) : null;
+
         return rescue(
-            callback: fn() => $this->request->send('get', '/'.$this->path.$params)->collect(),
+            callback: fn() => $this->request->send('get', '/' . $this->path . $params)->collect(),
             rescue: fn()   => $this->fallback()
         );
     }
@@ -149,7 +165,7 @@ class CatImageRequest
      *
      * @param  ?string  $key  The key to look for.
      * @param  ?string  $default  Any fallback value.
-     * 
+     *
      * @return mixed
      */
     public function config(?string $key = null, ?string $default = null)
@@ -166,10 +182,10 @@ class CatImageRequest
     {
         return collect([
             [
-            'url'    => url('/images/fallback_image.jpg'),
-            'width'  => 772,
-            'height' => 514,
-            ]
+                'url'    => url('/images/fallback_image.jpg'),
+                'width'  => 772,
+                'height' => 514,
+            ],
         ]);
     }
 }

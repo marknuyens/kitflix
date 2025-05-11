@@ -4,62 +4,90 @@ namespace App\Http\Controllers;
 
 use App\Genre;
 use App\Models\Content;
+use App\Models\WatchSession;
 use App\Services\TheCatApi\CatImageRequest;
 use Illuminate\Http\Request;
 
 class ContentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get the data of the current page.
      */
-    public function index(Request $request, CatImageRequest $cat_image)
+    public function getPageData()
     {
-        $page = config('kitflix.pages.' . $request->route()->getName());
+        return config('kitflix.pages.' . request()->route()->getName());
+    }
 
-        // TODO: use bulk import of images to avoid many API calls
-        // this can be done using the limit function and caching
-
-        $page['hero'] = [
-            'image'   => $cat_image->fallback()->first(),
-            'content' => Content::find(rand(1, 50)),
-        ];
-
+    /**
+     * Display a listing of the resource for the homepage.
+     */
+    public function home(Request $request)
+    {
+        $page = $this->getPageData();
+        $page['hero'] = Content::find(rand(1, 50));
         $page['video_sections'] = [];
 
-        if ($request->routeIs('home')) {
-            if ($user = $request->user()) {
-                $page['video_sections'][] = [
-                    'title'  => __('My List'),
-                    'videos' => $user->myList,
-                ];
-            }
-            foreach ([Genre::ADVENTURE, Genre::DRAMA, Genre::COMEDY] as $genre) {
-                $page['video_sections'][] = [
-                    'title'  => $genre->value,
-                    'videos' => Content::whereGenre($genre)->get(),
-                ];
-            }
+        // get an overview of saved items of the user
+        if ($user = $request->user()) {
+            $page['video_sections'][] = [
+                'title'  => __('My List'),
+                'videos' => $user->myList,
+            ];
         }
 
-        if ($request->routeIs('genres')) {
-            foreach ([Genre::ACTION, Genre::ADVENTURE, Genre::DRAMA, Genre::COMEDY, Genre::FANTASY] as $genre) {
-                $page['video_sections'][] = [
-                    'title'  => $genre->value,
-                    'videos' => Content::whereGenre($genre)->get(),
-                ];
-            }
+        // get a select number of genres (possibly dynamic in the future)
+        foreach ([Genre::DRAMA, Genre::COMEDY] as $genre) {
+            $page['video_sections'][] = [
+                'title'  => $genre->value,
+                'videos' => Content::whereGenre($genre)->get(),
+            ];
         }
 
-        if ($request->routeIs('my-list')) {
-            if ($user = $request->user()) {
-                $page['video_sections'][] = [
-                    'title'  => __('My List'),
-                    'videos' => $user->myList,
-                ];
-            }
+        // insert a top 10 overview of popular films
+        $page['video_sections'][] = [
+            'count'  => true,
+            'title' => __('Top 10 TV Shows in Belgium Today'),
+            'videos' => Content::popular(10)->get()
+        ];
+
+        // add another few genres (possibly dynamic in the future)
+        foreach ([Genre::ADVENTURE, Genre::DOCUMENTARY, Genre::CRIME, Genre::ROMANCE] as $genre) {
+            $page['video_sections'][] = [
+                'title'  => $genre->value,
+                'videos' => Content::whereGenre($genre)->get(),
+            ];
         }
 
-        return view('content.index', $page);
+        return view('content.home', $page);
+    }
+
+    /**
+     * Display a listing of the resource for the genres page.
+     */
+    public function genres(Request $request)
+    {
+        $page = $this->getPageData();
+
+        foreach ([Genre::ACTION, Genre::ADVENTURE, Genre::DRAMA, Genre::COMEDY, Genre::FANTASY] as $genre) {
+            $page['video_sections'][] = [
+                'title'  => $genre->value,
+                'videos' => Content::whereGenre($genre)->get(),
+            ];
+        }
+
+        return view('content.genres', $page);
+    }
+
+    /**
+     * Display a listing of the resource for the user's personal page.
+     */
+    public function my_list(Request $request)
+    {
+        $page = $this->getPageData();
+        
+        $page['videos'] = $request->user()->myList;
+
+        return view('content.my-list', $page);
     }
 
     /**

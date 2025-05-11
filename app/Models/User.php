@@ -8,7 +8,7 @@ use App\Models\Content;
 use App\Models\WatchSession;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\hasManyThrough;
+use Illuminate\Database\Eloquent\Relations\belongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -67,7 +67,7 @@ class User extends Authenticatable
     /**
      * Get the content from "my list" of the user.
      */
-    public function myList()
+    public function myList(): belongsToMany
     {
         return $this->belongsToMany(Content::class, WatchSession::class, 'user_id', 'content_id');
     }
