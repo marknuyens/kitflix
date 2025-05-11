@@ -2,4 +2,39 @@
 
 ## About Kitflix
 
-Netflix for kittens!
+It's Netflix, but for kittens!
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone marknuyens/kitflix
+    ```
+2. Navigate to the project directory:
+   ```bash
+   cd kitflix
+   ```
+3. Install the dependencies:
+   ```bash
+   composer install
+   npm install
+   npm run build
+   ```
+4. Copy the `.env.example` file to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+5. Generate the application key:
+   ```bash
+   php artisan key:generate
+   ``` 
+6. Set up the database:
+    ```bash
+    php artisan migrate
+    php artisan db:seed
+    ```
+7. Start the development server:
+   ```bash
+   php artisan serve
+   ```
+8. Open your browser and go to `http://localhost:8000` to see the application in action.
