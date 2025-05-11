@@ -39,3 +39,5 @@ It's Netflix, but for kittens!
    php artisan serve
    ```
 8. Open your browser and go to `http://localhost:8000` to see the application in action.
+9. Oh, and simply press `Ctrl + C` to stop the server when you're done.
+10. Last, but not least: *enjoy the kittens!* 😻
