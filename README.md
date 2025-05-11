@@ -8,7 +8,7 @@ It's Netflix, but for kittens!
 
 1. Clone the repository:
    ```bash
-   git clone marknuyens/kitflix
+   git clone https://github.com/marknuyens/kitflix.git
     ```
 2. Navigate to the project directory:
    ```bash
@@ -24,15 +24,16 @@ It's Netflix, but for kittens!
    ```bash
    cp .env.example .env
    ```
-5. Generate the application key:
-   ```bash
-   php artisan key:generate
-   ``` 
-6. Set up the database:
+5. Set up the database:
     ```bash
+    touch database/database.sqlite
     php artisan migrate
     php artisan db:seed
     ```
+6. Generate the application key:
+   ```bash
+   php artisan key:generate
+   ``` 
 7. Start the development server:
    ```bash
    php artisan serve
